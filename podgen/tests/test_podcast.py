@@ -42,6 +42,7 @@ class TestPodcast(unittest.TestCase):
         self.description = 'This is a cool feed!'
         self.subtitle = 'Coolest of all'
 
+        self.summary = 'This is a cool podcast description that is unique for itunes'
         self.language = 'en'
 
         self.cloudDomain = 'example.com'
@@ -74,6 +75,7 @@ class TestPodcast(unittest.TestCase):
         fg.name = self.name
         fg.website = self.website
         fg.description = self.description
+        fg.summary = self.summary
         fg.subtitle = self.subtitle
         fg.language = self.language
         fg.cloud = (self.cloudDomain, self.cloudPort, self.cloudPath,
@@ -105,6 +107,7 @@ class TestPodcast(unittest.TestCase):
             name=self.name,
             website=self.website,
             description=self.description,
+            summary=self.summary,
             subtitle=self.subtitle,
             language=self.language,
             cloud=(self.cloudDomain, self.cloudPort, self.cloudPath,
@@ -141,6 +144,7 @@ class TestPodcast(unittest.TestCase):
         assert fg.website == self.website
 
         assert fg.description == self.description
+        assert fg.summary == self.summary
         assert fg.subtitle == self.subtitle
 
         assert fg.language == self.language
@@ -214,6 +218,8 @@ class TestPodcast(unittest.TestCase):
 
         assert channel.find("title").text == self.name
         assert channel.find("description").text == self.description
+        assert channel.find("{%s}summary" % self.nsItunes).text == \
+            self.summary
         assert channel.find("{%s}subtitle" % self.nsItunes).text == \
             self.subtitle
         assert channel.find("link").text == self.website

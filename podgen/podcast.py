@@ -219,6 +219,20 @@ class Podcast(object):
         :RSS: itunes:block
         """
 
+        self.summary = None
+        """The itunes store specific description of the podcast. It might be 
+        useful if you want a specific description on the itunes store and a 
+        different one in other channels. (You would in that case be aditionally 
+        using the description tag).
+
+        It is in most cases quite redundant, as a populated description tag will
+        be used if there is no itunes:summary on the channel level. However in
+        some scenarioes it could still be usefull. 
+
+        :type: :obj:`str`
+        :RSS: itunes:summary
+        """
+
         self.__category = None
 
         self.__image = None
@@ -455,6 +469,9 @@ class Podcast(object):
         explicit = etree.SubElement(channel, '{%s}explicit' % ITUNES_NS)
         explicit.text = "yes" if self.explicit else "no"
 
+        if self.summary:
+            summary = etree.SubElement(channel, '{%s}summary' % ITUNES_NS)
+            summary.text = self.summary
         if self.__cloud:
             cloud = etree.SubElement(channel, 'cloud')
             cloud.attrib['domain'] = self.__cloud.get('domain')
